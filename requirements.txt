@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+langchain
+langchain-chroma
+langchain-openai
+langchain-huggingface
+chromadb
+python-dotenv
+gradio
+pysqlite3-binary
