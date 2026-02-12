@@ -1,10 +1,11 @@
+from fastapi import FastAPI
 import gradio as gr
 from dotenv import load_dotenv
-
 from implementation.answer import answer_question
 
 load_dotenv(override=True)
 
+app = FastAPI()
 
 def format_context(context):
     result = "<h2 style='color: #ff7800;'>Relevant Context</h2>\n\n"
@@ -28,8 +29,8 @@ def main():
 
     theme = gr.themes.Soft(font=["Inter", "system-ui", "sans-serif"])
 
-    with gr.Blocks(title="Paranet Expert Assistant", theme=theme) as ui:
-        gr.Markdown("# 🏢 Paranet Expert Assistant\nAsk me anything about Paranet!")
+    with gr.Blocks(title="Paranet Assistant", theme=theme) as ui:
+        gr.Markdown("# 🏢 Paranet Assistant\nAsk me anything about Paranet!")
 
         with gr.Row():
             with gr.Column(scale=1):
@@ -56,6 +57,12 @@ def main():
 
     ui.launch(inbrowser=True)
 
+#Vercel 关注的是文件中的全局变量声明，以下代码Vercel能识别出这个 app 对象并处理所有的 HTTP 请求
+app = gr.mount_gradio_app(app, ui, path="/")
 
+
+# 本地调试使用
 if __name__ == "__main__":
-    main()
+    import uvicorn
+    # 本地运行现在需要用 uvicorn 运行 app 变量
+    uvicorn.run(app, host="127.0.0.1", port=7860)
